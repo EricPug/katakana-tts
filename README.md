@@ -12,5 +12,5 @@ Generates OGG audio files from a list of Japanese katakana words using Google Cl
 
 1. Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to your credentials file.
 2. Put katakana words (one per line) in `wordlist.txt`.
-3. Run the script: `python Generater.py`
+3. Run the script: `python Generate.py`
 4. Audio files will be saved in the `audio/` folder.
