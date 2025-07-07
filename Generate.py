@@ -3,9 +3,11 @@ import time
 from google.cloud import texttospeech
 from google.api_core.exceptions import GoogleAPIError
 
+GOOGLE_CREDENTIALS_JSON = "ENTER YOUR CREDENTIALS HERE"
+
 WORDLIST_FILE = "wordlist.txt"
 OUTPUT_DIR = "audio"
-GOOGLE_CREDENTIALS_JSON = "ENTER YOUR CREDENTIALS HERE"
+
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 5
 
@@ -23,14 +25,14 @@ audio_config = texttospeech.AudioConfig(
     audio_encoding=texttospeech.AudioEncoding.OGG_OPUS
 )
 
-# Ensure output folder exists
+# folder exists?
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Read katakana word list
+# Read word list
 with open(WORDLIST_FILE, "r", encoding="utf-8") as f:
     katakana_words = [line.strip() for line in f if line.strip()]
 
-# Generate audio with retry logic
+# Generate audio
 for word in katakana_words:
     filename = os.path.join(OUTPUT_DIR, f"{word}.ogg")
     if os.path.exists(filename):
@@ -50,7 +52,7 @@ for word in katakana_words:
             print(f"Generated: {filename}")
             break
         except GoogleAPIError as e:
-            print(f"⚠️  Error generating '{word}' (attempt {attempt}/{MAX_RETRIES}): {e.message}")
+            print(f"Error generating '{word}' (attempt {attempt}/{MAX_RETRIES}): {e.message}")
             if attempt < MAX_RETRIES:
                 time.sleep(RETRY_DELAY_SECONDS)
             else:
